@@ -11,7 +11,6 @@ import sys, getopt
 def main(argv):
     helpString = 'day1.py -i <inputString>'
     inputString = ''
-    outputString = ''
     
     try:
         opts, args = getopt.getopt(argv,"h:i:",[])
@@ -24,16 +23,24 @@ def main(argv):
             sys.exit(2)
         elif opt in ('-i'):
             inputString = arg
-    print 'Floor ' + parseInput(inputString)
+    floor, positionEnterBasement = parseInput(inputString)
+    print 'Floor ' + str(floor)
+    if (positionEnterBasement == -1):
+        print 'He did not enter the basement'
+    else:
+        print 'He entered the basement at position ' + str(positionEnterBasement)
 
 def parseInput(inputString):
     floor = 0
-    for c in inputString:
+    positionEnterBasement = -1
+    for i, c in enumerate(inputString):
         if (c == '('):
             floor += 1
         elif (c == ')'):
             floor -= 1
-    return str(floor)
+        if (floor == -1 and positionEnterBasement == -1):
+            positionEnterBasement = i+1
+    return floor, positionEnterBasement
  
 if __name__ == "__main__":
     main(sys.argv[1:])
